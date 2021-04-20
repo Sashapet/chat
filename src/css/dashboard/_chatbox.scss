@@ -1,0 +1,167 @@
+.right-side {
+    position: relative;
+    width: 60%;
+    background-color: $secondaryDash;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    border-left: $border;
+    .chatbox-container{
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        min-height: 0;
+        background-color: $primaryDash;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        .profile {
+            padding-top:20px;
+            height: 92px;
+            padding-bottom: 20px;
+            border-bottom: $border;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 3%;
+            // justify-content: flex-start;
+            img{
+                width: 50px;
+                height: 50px;
+                border-radius:50%;
+            }
+            h3{
+                // font-size: 15px;
+                padding-left: 1%;
+                color:#004bc4;
+            }
+        }
+        .messages {
+            flex-grow: 1;
+            overflow: auto;
+            min-height: 0;
+            width: 100%;
+            background-color: #fff;
+            margin-bottom: 59px;
+            .message-container {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                .message{
+                    max-width: 70%;
+                    margin: 0 3%;
+                    margin-bottom: 10px;
+                    .avatar {
+                        img {
+                            width: 35px;
+                            height: 35px;
+                            border-radius: 50%;
+                        }
+                    }
+                    .name{
+                        h2{
+                        color:#000;
+                        padding-bottom: 0;
+                    }
+                         }
+                    .text {
+                        background-color: $secondary;
+                        border-top-left-radius: 20px;
+                        border-top-right-radius: 20px;
+                        border-bottom-left-radius: 20px;
+                        h3{
+                            padding: 10px;
+                            color: #fff;
+                            font-size: 15px;
+                        }
+
+                    }
+
+                }
+            }
+            .message-container.friend{
+                justify-content: flex-start;
+                .message {
+                    display: flex;
+                    align-items: flex-end;
+                    .text-container {
+                        flex-grow: 1;
+                        padding-left:10px;
+                        .text{
+                            border-bottom-right-radius: 20px;
+                            border-bottom-left-radius: 0;
+                            background-color:$primaryDash;
+                            h3{color:#000;}
+                        }
+                    }
+                }
+            }
+        }
+        .chat-input {
+            background-color: $primaryDash;
+            height: 60px;
+            width: 100%;
+            position: absolute;
+            bottom:0;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10;
+            border-bottom-right-radius: 20px;
+            border-top: $border;
+           .input {
+            flex-basis: 90%;
+            position: relative;
+            input {
+                height: 30px;
+                width: 100%;
+                border-radius: 20px;
+                outline:none;
+                border:none;
+                padding-left: 10px;
+                padding-right: 35px;
+                border: $border;
+            }
+            i {
+                position: absolute;
+                right: 0;
+                bottom: 5px;
+                cursor: pointer;
+            }
+           }
+           i{
+            color:#000;
+            font-size: 20px;
+            margin: 0 10px;
+            cursor: pointer;
+           }
+        }
+    }
+}
+@media only screen and (max-width: 600px) {
+    .right-side .chatbox-container .profile img{
+        width: 35px;
+        height: 35px;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .message-container.friend{
+        .avatar {
+            display: none;
+        }
+        .text {
+            h3{
+                font-size: 10px;
+            }
+        }
+    }
+}
+@media only screen and (max-width: 280px) {
+    .text {
+        h3 {
+            font-size: 12px !important;
+        }
+    }
+}
