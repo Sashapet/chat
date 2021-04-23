@@ -81,12 +81,12 @@
                             border-top-left-radius: 20px;
                             border-top-right-radius: 20px;
                             border-bottom-left-radius: 20px;
-                            h3{
+                              h3{
                                 padding: 10px;
                                 color: #fff;
                                 font-size: 15px;
-                                word-break: break-all;
-                                // max-width: fit-content;
+                                word-break: break-word;
+                                overflow-wrap: break-word;
                             }
     
                         }
