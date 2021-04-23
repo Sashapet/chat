@@ -8,6 +8,9 @@
 @import 'dashboard/profile';
 @import 'dashboard/spinner';
 @import './login/login';
+@import './scrollbar';
+@import './dashboard/inputMessage';
+
 * {
     padding:0;
     margin:0;
@@ -17,16 +20,12 @@
 h1, h2, h3 {
     font-family: 'Nunito', sans-serif;
 }
-// h3 {
-//     font-family: 'Montserrat', sans-serif;
-// }
 
 h1 {
     font-weight: 900;
     font-style: italic;
     color:#fff;
     font-size: 17px;
-    padding-top: 10px;
     cursor: pointer;
 }
 h2 {
@@ -40,8 +39,12 @@ h3 {
     font-size: 18px;
     font-weight: 700;
 }
+img {
+    object-fit: cover;
+}
 .app {
     min-height: 100vh;
+    overflow: hidden;
     width: 100%;
     background: #00B4DB;
     background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
@@ -50,6 +53,35 @@ h3 {
         width: 80%;
         height: 100%;
         margin: 0 auto;
+        .nav-container {  
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            .nav-buttons {
+                display: flex;
+                justify-content: flex-end;
+                width: 80%;
+                button {
+                    display: none;
+                    padding-left: 0;
+                    margin-left: 10px;
+                    height: 45px;
+                    max-width: 100px;
+                    width: 90%;
+                    border-radius: 30px;
+                    border: none;
+                    outline: none;
+                    cursor: pointer;
+                    background-color: #003a96;
+                    box-shadow: $shadow;
+                    color: #fff;
+                    font-family: 'Montserrat', sans-serif;
+                    font-weight: normal;
+                }
+            }
+        }
     }
 }
 .scrollbar-track {
@@ -62,6 +94,13 @@ h3 {
 
 @media only screen and (max-width: 600px) {
     h3 {
-        font-size: 14px;
+        font-size: 12px;
+    }
+    h2{
+        font-size: 10px;
+    }
+
+    .app .app-container .nav-container .nav-buttons button{
+        display: block;
     }
 }

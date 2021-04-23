@@ -5,9 +5,13 @@ import Dashboard from './Dashboard/Dashboard'
 import PageNotFound from './PageNotFound'
 import {Route, Switch} from "react-router-dom";
 import {useAuth} from '../context/AuthContext';
+import {useDashboard} from '../context/DashboardContext'
 function App() {
-  const {currentUser} = useAuth();
+  const {currentUser, logOut} = useAuth();
+  const {setShowProfile, setShowChat} = useDashboard();
+  
   let routes;
+
   if (currentUser) {
       routes = (
         <Switch>
@@ -29,6 +33,14 @@ function App() {
         <div className='app-container'>
           <div className='nav-container'>
             <h1>ChatApp</h1>
+            <div className='nav-buttons'>
+              {currentUser !==null && 
+                <>
+                  <button onClick={()=>{setShowProfile(true); setShowChat(false);}}>My Profile</button>
+                  <button onClick={()=>{logOut(); setShowProfile(false); setShowChat(true)}}>Log Out</button>
+                </>
+              }
+            </div>
           </div>
           {routes}
         </div>

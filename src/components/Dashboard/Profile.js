@@ -8,12 +8,13 @@ import PictureInput from '../Inputs/PictureInput'
 export default function Profile({user}) {
 
 const {updateUser, uploadError, firstnameLoading,
-     lastnameLoading,avatarLoading} = useUser();
+     lastnameLoading, avatarLoading} = useUser();
 
 const handleClick = () => {
     const avatar = document.getElementById('avatarInput');
     avatar.click();
 }
+
 return (
 <>
 <div className='profile-view'>
@@ -28,7 +29,6 @@ return (
         validationSchema = {updateSchema}
     >
         {({
-            handleSubmit,
             errors,
             touched,
             values,
@@ -43,7 +43,7 @@ return (
                 error = <h2>{errors.lastname}</h2>; 
             }
             return (
-            <form className='input-container' onSubmit={handleSubmit}>
+            <form className='input-container' onSubmit={(e)=>e.preventDefault()}>
                 <div className='avatar' onClick={()=>handleClick()}>
                     {/* hidden input */}
                     {!avatarLoading ? (
@@ -61,14 +61,14 @@ return (
                     }                            
                 </div>
                 <div className='input'>
-                    <TextInput 
+                    <TextInput
                         name='firstname'
                         placeholder='First Name'
                     />
                     <i className="fa fa-user"></i>
                     <button 
                         className={(user.firstname === values.firstname || errors.firstname) ? 'button disabled' : 'button'} 
-                        type='submit'
+                        type='button'
                         onClick={async () => !errors.firstname && updateUser('firstname', values.firstname)}
                     >
                         {firstnameLoading ? 'Loading...' : 'Update'}
@@ -82,8 +82,9 @@ return (
                     />
                     <i className="fa fa-user"></i>
                     <button 
+                        id='updtbutton'
                         className={(user.lastname === values.lastname || errors.lastname) ? 'button disabled' : 'button'} 
-                        type='submit'
+                        type='button'
                         onClick={async () => !errors.lastname && updateUser('lastname', values.lastname)}
                     >
                         {lastnameLoading ? 'Loading...' : 'Update'}

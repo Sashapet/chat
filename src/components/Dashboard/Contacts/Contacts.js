@@ -1,55 +1,70 @@
 import React, {useEffect, useState} from 'react'
 import Contact from './Contact'
+import { useConverse } from '../../../context/ConverseContext'
 import { useDashboard } from '../../../context/DashboardContext'
+export default function Contacts() {
+    const { setShowProfile, setShowChat, setChatInfo} = useDashboard();
 
-export default function Contacts({conversations, showProfile, setChatInfo}) {
-    const {users} = useDashboard();
-    
+    const {conversations, users, setLoadConvers, loadConvers,
+         fetchUserData, countConvers, setCountConvers, selectConverse} = useConverse();
+
     const [newConversations, setNewConversations] = useState(false);
-
+ 
     useEffect(() => {
         let newArray = [];
-        if (users.length === conversations.length+1) {
-            conversations.forEach(conversation => {
+        //ATTACH USERS TO CONVERSATIONS
+        if (conversations) {
+           setCountConvers(0);
+           conversations.forEach(conversation => {
+               const id = conversation.id;
+               fetchUserData(id);
+               setCountConvers(prevState => prevState + 1)
+           });
+            if (countConvers === conversations.length) {
+                conversations.forEach((conversation, index)=>{
                 const user = users.find(user => user.id === conversation.id);
-                let obj = {
-                    conversation,
-                    user,
-                    active:false
+                if (user) {
+                    let obj = {
+                        conversation,
+                        user,
+                    }
+                    newArray.push(obj);
+                    if (conversation.selected) {
+                        setChatInfo(obj);
+                    }
                 }
-                console.log(obj);
-                newArray.push(obj);
-            });
-            newArray[0].active = true;
-            setNewConversations(newArray);
-            setChatInfo(newArray[0]);
-        }else{
-            console.log('dont have it!');
-            console.log(users.length , conversations.length);
-            console.log(users);
+                })
+                   setNewConversations(newArray);
+                    setLoadConvers(false);
+            }
         }
-    }, [users, conversations])
-    const setActive = (index) => {
-        let newArray = newConversations;
-        newArray.forEach(conversation => {
-            conversation.active = false;
-        });
-        newArray[index].active = true;
-        setNewConversations(newArray);
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [conversations, users])
+    if (loadConvers) {
+        return  (
+            <div className="lds-ring" style={{left:'50%', transform:'translateX(-50%)'}}>
+                <div></div><div></div><div></div><div></div>
+            </div>
+        )
     }
-    console.log(newConversations);
     return (
-        <div className='contacts'>
-            {newConversations && newConversations.map((conversation, index)=>{
+        <>
+            {newConversations && newConversations.map((converse, index)=>{
                 return (
-                    <div 
-                        className={conversation.active ? 'contact active' : 'contact'} 
+                    <div
+                        className={converse.conversation.selected ? 'contact active' : 'contact'} 
                         key={index} 
-                        onClick={()=>{showProfile(false); setChatInfo(conversation); setActive(index)}}>
-                        <Contact user={conversation.user} />
+                        onClick={()=>{
+                            setShowProfile(false); 
+                            setShowChat(true); 
+                            setChatInfo(converse); 
+                            selectConverse(converse.conversation.roomId)
+                        }}
+                        >
+                        <Contact user={converse.user} conversation={converse.conversation} />
                     </div>
                 )
             })}
-        </div>
+        </>
     )
 }

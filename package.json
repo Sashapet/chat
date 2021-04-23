@@ -1,6 +1,5 @@
 {
   "name": "chat-app",
-  "homepage": "https://Sashapet.github.io/chat-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,7 +13,6 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "smooth-scrollbar": "^8.6.1",
     "web-vitals": "^1.1.1",
     "yup": "^0.32.9"
   },

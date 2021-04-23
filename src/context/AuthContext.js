@@ -14,14 +14,14 @@ export function AuthProvider( {children} ) {
         error:null,
         loading:false
     })
-
+    //LISTENING FOR USER CHANGE
     useEffect(() => {
-        const unsub = auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(user => {
             setCurrentUser(user)
         })
-        return unsub;
+        return () => setCurrentUser(null)
     }, [])
-
+    //SIGN
     const signIn = async (email, password) => {
         //LOADING START
         setLoginState({error:null, loading:true})
@@ -39,6 +39,7 @@ export function AuthProvider( {children} ) {
             }
         }
     }
+    //LOGOUT
     const logOut = async () => {
         await auth.signOut();
     }   
@@ -49,6 +50,7 @@ export function AuthProvider( {children} ) {
         signIn,
         setLoginState,
         logOut,
+        setCurrentUser
     }
     return (
         <AuthContext.Provider value = {value}>

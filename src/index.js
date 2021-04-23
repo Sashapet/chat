@@ -6,6 +6,8 @@ import App from './components/App';
 import {BrowserRouter as Router} from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext';
 import { UserProvider } from './context/UserContext'
+import { MessageProvider } from './context/MessageContext'
+import { ConverseProvider } from './context/ConverseContext'
 import { DashboardProvider } from './context/DashboardContext'
 
 ReactDOM.render(
@@ -13,9 +15,13 @@ ReactDOM.render(
     <AuthProvider>
       <UserProvider>
         <DashboardProvider>
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
+          <ConverseProvider>
+            <MessageProvider>
+              <React.StrictMode>
+                <App />
+              </React.StrictMode>
+            </MessageProvider>
+          </ConverseProvider>
         </DashboardProvider>
       </UserProvider>
     </AuthProvider>

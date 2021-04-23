@@ -7,8 +7,10 @@ export const loginSchema = yup.object().shape({
     password : yup.string().min(6).max(20).required()
 })
 export const updateSchema = yup.object().shape({
-    firstname: yup.string().max(30).required()
-    .matches(letterRegex, "Only alphabets are allowed for this field"),
-    lastname: yup.string().max(30).required()
+    firstname: yup.string().max(15).required()
+    .matches(letterRegex, "Only alphabets are allowed for this field")
+    .transform((value, originalValue) => (/\s/.test(originalValue) ? NaN : value)),
+    lastname: yup.string().max(15).required()
+    .transform((value, originalValue) => (/\s/.test(originalValue) ? NaN : value))
     .matches(letterRegex, "Only alphabets are allowed for this field ")
 })

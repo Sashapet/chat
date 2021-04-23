@@ -1,38 +1,40 @@
 import React, {useEffect} from 'react'
 import Message from './Message'
-import { useDashboard } from '../../../context/DashboardContext'
+import { useMessage } from '../../../context/MessageContext'
 import { useUser } from '../../../context/UserContext'
-export default function Messages({roomId}) {
+import {useDashboard} from '../../../context/DashboardContext'
+export default function Messages() {
 
-    const {fetchMessages, messages} = useDashboard();
+    const {messages, loadingMessages, errorMessages} = useMessage();
     const {userData} = useUser();
-
+    const {chatInfo} = useDashboard();
+    //SCROLLING TO BOTTOM
     useEffect(() => {
-        fetchMessages(roomId);
-    }, [roomId])
-    useEffect(() => {
-        if (messages) {
-            let messageBar = document.querySelector('.messages');
-            messageBar.scrollTop = messageBar.scrollHeight - messageBar.clientHeight;
+        if (!loadingMessages && messages) {
+            let messageScrollbar = document.querySelector('.messages');
+            messageScrollbar.scrollTop = messageScrollbar.scrollHeight; 
         }
-    }, [messages])
-
-    if(!messages){
-        return <h1>Loading...</h1>
+    }, [loadingMessages, messages])
+    if(loadingMessages){
+        return <div className="lds-ring chatbox"><div></div><div></div><div></div><div></div></div>
     }
-
-    return (
-        <div className='messages'>
-            {messages.map((message, index) => {
-                return (
-                <div 
-                    className={message.userId === userData.id ? 'message-container' : 'message-container friend'}
-                    key={index}
-                >   
-                    <Message message={message} />
-                </div>
-                )
-            })}
-        </div>
-    )
+    if (errorMessages) {
+        return <h3 className='messageError'>{errorMessages}</h3>
+    }
+    const roomId = chatInfo.conversation.roomId;
+    // console.log();
+        return (
+            <div className='messages'>
+                {messages && roomId === messages[0].roomId && messages.map((message, index) => {
+                    return (
+                    <div 
+                        className={message.userId === userData.id ? 'message-container' : 'message-container friend'}
+                        key={index}
+                    >   
+                        <Message message={message} />
+                    </div>
+                    )
+                })}
+            </div>
+        )
 }

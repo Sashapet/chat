@@ -9,12 +9,16 @@ export const useUser = () => {
 
 export function UserProvider( {children} ) {
     const [userData, setUserData] = useState();
+    const [userDataLoading, setUserDataLoading] = useState(false);
+    const [userDataError, setUserError] = useState(false);
     const [uploadError, setUploadError] = useState(false);
     const [firstnameLoading, setFirstnameLoading] = useState(false)
     const [lastnameLoading, setLastnameLoading] = useState(false)
     const [avatarLoading, setAvatarLoading] = useState(false)
 
     const fetchUserData = async () => {
+        setUserDataLoading(true);
+        setUserError(false);
         const id = auth.currentUser.uid;
         const userRef = database.ref('/users')
         try {
@@ -22,9 +26,15 @@ export function UserProvider( {children} ) {
                 if (snap.child(id).exists()) {
                     let user = snap.child(id).val();
                     setUserData(user);
+                }else{
+                    setUserError('Something wrong happened with our database, please contact our support.')
+                    setUserDataLoading(false)
                 }
             })
+            setUserDataLoading(false)
         } catch(e) {
+            setUserDataLoading(false);
+            setUserError(e.message + ' Please contact our support.')
             console.log(e.meesage);
         }
     }
@@ -36,12 +46,12 @@ export function UserProvider( {children} ) {
             if (type === 'firstname') {
                 //FIRSTNAME
                 setFirstnameLoading(true);
-                await userRef.update({firstname:data})
+                await userRef.update({firstname:data.trim()})
                 setFirstnameLoading(false);
             }else if(type==='lastname'){
                 //LASTNAME
                 setLastnameLoading(true);
-                await userRef.update({lastname:data})
+                await userRef.update({lastname:data.trim()})
                 setLastnameLoading(false);
             }else if(type ==='avatar'){
                 //AVATAR
@@ -90,6 +100,8 @@ export function UserProvider( {children} ) {
         firstnameLoading,
         lastnameLoading,
         avatarLoading,
+        userDataError,
+        userDataLoading
     }
     return (
         <UserContext.Provider value={value}>

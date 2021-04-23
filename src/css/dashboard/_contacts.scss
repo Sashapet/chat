@@ -13,7 +13,7 @@
         min-height: 0;
         .profile{
             padding-top:20px;
-            height: 92px;
+            // height: 92px;
             padding-bottom: 20px;
             margin-left: 5%;
             display: flex;
@@ -26,8 +26,6 @@
                 cursor: pointer;
                 width: 100%;
                 .img{
-                    width: 50px;
-                    height: 50px;
                     img{
                         width: 50px;
                         height: 50px;
@@ -42,6 +40,7 @@
                     justify-content: flex-start;
                     position: relative;
                     .user-name{
+                        word-break: break-all;
                         padding-left: 3%;
                         // margin-left: 4%;
                         color:#fff;
@@ -49,6 +48,7 @@
                     .drop-container{
                         position: relative;
                         padding-left:3px;
+                        margin-right: 10px;
                         .dropIcon{
                             font-size: 20px;
                             font-weight: 600;
@@ -109,9 +109,22 @@
                         height: 35px;
                         border-radius:50%;
                     }
-                    h2{
-                        margin-left: 10px;
-                        color:#fff;
+                    .flexContainer{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        h2{
+                            margin-left: 10px;
+                            color:#fff;
+                            word-break: break-all;
+                        }
+                        h3{
+                            margin-left: 9px;
+                            font-size: 14px;
+                            color:#c4c4c4;
+                            font-weight: 500;
+                            word-break: break-all;
+                        }
                     }
                 }
             }
@@ -142,4 +155,20 @@
     .contact-profile{
         flex-direction: column !important;
     }
+    .left-side .contacts-container .profile .profile-container .flex-container .drop-container {
+        display: none;
+    }
+    .left-side .contacts-container .contacts .contact .contact-profile .flexContainer h3{
+        font-size: 12px;
+    }
+    .left-side .contacts-container .contacts .contact{
+        padding-left: 0%;
+    }
+    .left-side .contacts-container .profile {
+        padding: 8px 0;
+    }
+    .left-side .contacts-container .contacts .contact .contact-profile .flexContainer h2{
+        margin-left: 2px;
+    }
+    
 }

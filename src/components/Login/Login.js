@@ -54,7 +54,7 @@ return (
                             autoComplete = "on"
                         />
                     </div>
-                    <div className='button' onClick={()=>console.log('yes')}>
+                    <div className='button'>
                         <input type='submit' 
                             style={{pointerEvents: loginState.loading ? 'none' : 'visible'}} 
                             value={loginState.loading ? 'Loading...' : 'LOGIN'} 
