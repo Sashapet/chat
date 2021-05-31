@@ -6,7 +6,7 @@ export const useConverse = () => {
     return useContext(ConverseContext);
 }   
 
-export function ConverseProvider( {children} ) {
+export const ConverseProvider = ( {children} ) => {
 
         const [conversations, setConversations] = useState(null);
         const [loadConvers, setLoadConvers] = useState(false);

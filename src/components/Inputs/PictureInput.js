@@ -2,7 +2,7 @@ import React from 'react'
 import {useField} from 'formik';
 import { useUser } from '../../context/UserContext'
 
-export default function PictureInput(props) {
+const PictureInput = (props) => {
     const [field] = useField(props.name);
     const {validateAvatar} = useUser();
     return (
@@ -14,3 +14,4 @@ export default function PictureInput(props) {
         /> 
     )
 }
+export default PictureInput;

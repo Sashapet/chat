@@ -2,10 +2,15 @@ import React, {useEffect, useState} from 'react'
 import Messages from './Messages'
 import {useDashboard} from '../../../context/DashboardContext';
 import {useMessage} from '../../../context/MessageContext';
+import GrowWrapper from '../../../style/components/Wrappers/GrowWrapper'
+import ProfileWrapper from '../../../style/components/Wrappers/ProfileWrapper'
+import MessageInput from './MessageInput'
+import Img from '../../../style/components/Img'
+import Name from '../../../style/components/Name'
 
-export default function ChatBox() {
+const ChatBox = () => {
 
-const {chatInfo} = useDashboard();
+const {chatInfo, setShowProfile, setShowChat} = useDashboard();
 const {fetchMessages, } =  useMessage();
 const [imageLoaded, setImageLoaded] = useState(false);
     useEffect(() => {
@@ -19,19 +24,30 @@ const [imageLoaded, setImageLoaded] = useState(false);
     if (!chatInfo) {
         return null;
     }
+
     let user = chatInfo.user;
+
     return (
-        <div className='chatbox-container'>
-            <div className='profile'>
-                <img 
-                    style={{visibility:imageLoaded ? 'visible' : 'hidden'}} 
-                    onLoad={()=>setImageLoaded(true)} 
-                    src={user.avatarUrl} 
-                    alt='profilePicture'
-                />
-                <h3>{user.firstname} {user.lastname}</h3>
-            </div>
+        <GrowWrapper>
+            <ProfileWrapper>
+                <i
+                    className="fas fa-angle-left backIcon"
+                    onClick={()=>{setShowProfile(false); setShowChat(false);}}
+                >
+                </i>
+                <div>
+                    <Img
+                        style={{visibility:imageLoaded ? 'visible' : 'hidden'}} 
+                        onLoad={()=>setImageLoaded(true)} 
+                        src={user.avatarUrl} 
+                        alt='profilePicture'
+                    />
+                </div>
+                <Name blue>{user.firstname} {user.lastname}</Name>
+            </ProfileWrapper>
             <Messages />
-        </div>
+            <MessageInput />
+        </GrowWrapper>
     )
 }
+export default ChatBox;

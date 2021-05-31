@@ -6,7 +6,7 @@ export const useDashboard = () => {
     return useContext(DashboardContext);
 }   
 
-export function DashboardProvider( {children} ) {
+export const DashboardProvider = ( {children} ) => {
     const [showProfile, setShowProfile] = useState(false);
     const [showChat, setShowChat] = useState(true);
     const [chatInfo, setChatInfo] = useState(false);
@@ -19,6 +19,7 @@ export function DashboardProvider( {children} ) {
         showChat,
         chatInfo
     }
+
     return (
         <DashboardContext.Provider value = {value}>
             {children}

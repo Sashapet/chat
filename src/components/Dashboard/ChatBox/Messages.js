@@ -3,15 +3,18 @@ import Message from './Message'
 import { useMessage } from '../../../context/MessageContext'
 import { useUser } from '../../../context/UserContext'
 import {useDashboard} from '../../../context/DashboardContext'
-export default function Messages() {
+import ArrayWrapper from '../../../style/components/Wrappers/ArrayWrapper'
+import MessageWrapper from '../../../style/components/Wrappers/MessageWrapper'
+import Text from '../../../style/components/Text'
 
+const Messages = () => {
     const {messages, loadingMessages, errorMessages} = useMessage();
     const {userData} = useUser();
     const {chatInfo} = useDashboard();
     //SCROLLING TO BOTTOM
     useEffect(() => {
         if (!loadingMessages && messages) {
-            let messageScrollbar = document.querySelector('.messages');
+            let messageScrollbar = document.querySelector('#messages');
             messageScrollbar.scrollTop = messageScrollbar.scrollHeight; 
         }
     }, [loadingMessages, messages])
@@ -19,22 +22,23 @@ export default function Messages() {
         return <div className="lds-ring chatbox"><div></div><div></div><div></div><div></div></div>
     }
     if (errorMessages) {
-        return <h3 className='messageError'>{errorMessages}</h3>
+        return <Text middleError>{errorMessages}</Text>
     }
     const roomId = chatInfo.conversation.roomId;
-    // console.log();
+
         return (
-            <div className='messages'>
+            <ArrayWrapper messages id='messages'>
                 {messages && roomId === messages[0].roomId && messages.map((message, index) => {
                     return (
-                    <div 
-                        className={message.userId === userData.id ? 'message-container' : 'message-container friend'}
+                    <MessageWrapper 
+                        friend={message.userId === userData.id ? false : true}
                         key={index}
                     >   
                         <Message message={message} />
-                    </div>
+                    </MessageWrapper>
                     )
                 })}
-            </div>
+            </ArrayWrapper>
         )
 }
+export default Messages

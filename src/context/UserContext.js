@@ -7,7 +7,7 @@ export const useUser = () => {
     return useContext(UserContext);
 }
 
-export function UserProvider( {children} ) {
+export const UserProvider = ( {children} ) => {
     const [userData, setUserData] = useState();
     const [userDataLoading, setUserDataLoading] = useState(false);
     const [userDataError, setUserError] = useState(false);

@@ -7,7 +7,7 @@ export const useMessage = () => {
     return useContext(MessageContext);
 }
 
-export function MessageProvider( {children} ) {
+export const MessageProvider = ( {children} ) => {
 
     const [loadingMessages, setLoadingMessages] = useState(false);
     const [errorMessages, setErrorMessages] = useState(false);
@@ -33,7 +33,7 @@ export function MessageProvider( {children} ) {
                     ...prevState,
                     {
                         message,
-                        userId:id
+                        userId:id,
                     }
                 ])
             }

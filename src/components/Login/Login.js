@@ -3,14 +3,23 @@ import {Formik} from 'formik'
 import { useAuth } from '../../context/AuthContext'
 import { loginSchema } from '../../validations/validations'
 import TextInput from '../Inputs/TextInput'
+import {useHistory, Redirect} from 'react-router-dom'
+import Button from '../../style/components/Button'
+import Text from '../../style/components/Text'
+import ErrorWrapper from '../../style/components/Wrappers/ErrorWrapper'
 
-export default function Login() {
-const {signIn, loginState} = useAuth();
+const Login = () => {
+const {signIn, loginState, currentUser} = useAuth();
+const history = useHistory();
+
+if(currentUser){
+    return <Redirect to='/' />
+}
 
 return (
 <div className='login-container'> 
 	<div className='login-title'>
-        <h3>USER LOGIN</h3>
+        <Text login>USER LOGIN</Text>
         <div className='line'></div>
 	</div>
 	<div className='login-card'>
@@ -19,7 +28,7 @@ return (
                 email : "",
                 password : ""
             }} 
-        onSubmit={async (data) => await signIn(data.email, data.password)}
+        onSubmit={async (data) => {await signIn(data.email, data.password); history.push('/')}}
         validationSchema = {loginSchema} 
 		>
 		{({
@@ -29,22 +38,23 @@ return (
 		})=>{ 
             let error;
             if (loginState.error) {
-                error = <h2>{loginState.error}</h2>;
+                error = <Text error>{loginState.error}</Text>;
             } else if (errors.email && touched.email) {
-                    error = <h2>{errors.email}</h2>;
+                    error = <Text error>{errors.email}</Text>;
             } else if (errors.password && touched.password) {
-                error = <h2>{errors.password}</h2>; 
+                error = <Text error>{errors.password}</Text>; 
             }
 		    return(
 			    <form onSubmit={handleSubmit}>
-                    <div className='error'>
+                    <ErrorWrapper>
                         {error}
-		            </div>
+		            </ErrorWrapper>
                     <div className='input'>
                         <TextInput
                             name='email'
                             placeholder='Email'
                         />
+                        <i className="fa fa-user"></i>
                     </div>
                     <div className='input'>
                         <TextInput 
@@ -53,13 +63,15 @@ return (
                             type='password'
                             autoComplete = "on"
                         />
+                        <i className="fas fa-lock"></i>
                     </div>
-                    <div className='button'>
-                        <input type='submit' 
+                    <Button
+                            login
+                            type='submit' 
                             style={{pointerEvents: loginState.loading ? 'none' : 'visible'}} 
-                            value={loginState.loading ? 'Loading...' : 'LOGIN'} 
-                        />
-                    </div> 
+                    >
+                    {loginState.loading ? 'Loading...' : 'LOGIN'}
+                    </Button>
 				</form>
 			)
 		}}
@@ -68,3 +80,4 @@ return (
 </div>
     )
 }
+export default Login;

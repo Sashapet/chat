@@ -4,8 +4,11 @@ import {useConverse} from '../../../context/ConverseContext'
 import { useDashboard } from '../../../context/DashboardContext';
 import { useMessage } from '../../../context/MessageContext';
 import { useUser } from '../../../context/UserContext'
+import Img from '../../../style/components/Img'
+import Name from '../../../style/components/Name'
+import Text from '../../../style/components/Text'
 
-export default function DropDown({dropdown, iconActive}) {
+const DropDown = ({dropdown, iconActive}) => {
     const {logOut, setCurrentUser} = useAuth();
     const {setUsers, setConversations} = useConverse();
     const {setUserData, userData} = useUser();
@@ -29,17 +32,17 @@ export default function DropDown({dropdown, iconActive}) {
     }
     return (
     <>
-        <div className='img'>
-            <img 
+        <div>
+            <Img 
                 style={{visibility:imageLoaded ? 'visible' : 'hidden'}} 
                 onLoad={()=>setImageLoaded(true)} 
                 src={userData.avatarUrl} 
                 alt='profilePicture' 
             />
         </div>
-        <div className='flex-container'>
-            <h3 className='user-name'>{userData.firstname} {userData.lastname}</h3>
-            <div className='drop-container'>
+        <div className='dropDown-container'>
+            <Name>{userData.firstname} {userData.lastname}</Name>
+            <div className='dropDown'>
                 <i className={iconActive ? "fa fa-angle-down open dropIcon" : "fa fa-angle-down dropIcon"}></i>
                 <div className={dropdown ? 'open menu' : 'menu'}>
                     <ul>
@@ -48,11 +51,11 @@ export default function DropDown({dropdown, iconActive}) {
                             setShowChat(false);
                         }}>
                             <i className="far fa-user-circle"></i>
-                            <h3 className='button' >My Profile</h3>
+                            <Text dropdown>My Profile</Text>
                         </li>
                         <li onClick={()=>handleLogOut()}>
                             <i className="fas fa-sign-out-alt"></i>
-                            <h3 className='button'>Log Out</h3>
+                            <Text dropdown>Log Out</Text>
                         </li>
                     </ul>
                 </div>
@@ -61,3 +64,4 @@ export default function DropDown({dropdown, iconActive}) {
     </>
     )
 }
+export default DropDown;

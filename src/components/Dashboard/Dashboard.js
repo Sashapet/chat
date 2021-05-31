@@ -5,10 +5,12 @@ import Profile from './Profile'
 import {useUser} from '../../context/UserContext'
 import {useDashboard} from '../../context/DashboardContext'
 import { useConverse } from '../../context/ConverseContext'
-import MessageInput from './ChatBox/MessageInput'
+import SideWrapper from '../../style/components/Wrappers/SideWrapper'
+import { ThemeProvider } from 'styled-components'
+import Text from '../../style/components/Text'
 
-export default function Dashboard() {   
-    const { showProfile} = useDashboard();
+const Dashboard = () => {   
+    const { showProfile, showChat} = useDashboard();
     const {conversationError} = useConverse();
     const {fetchUserData, userData, userDataError, userDataLoading} = useUser();
 
@@ -18,35 +20,46 @@ export default function Dashboard() {
         const fetchUser = async () => {
             await fetchUserData()
         }
+
         fetchUser();
+
         return () => {
             document.querySelector('.app').style.height=null;
         }
-        
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []) 
-
     if (userDataLoading) {
         return <div className="lds-ring dash"><div></div><div></div><div></div><div></div></div>
     }
+
     if(!userData || userDataError){
-        return <div className='dashboard'><h3 className='userDataError'>{userDataError}</h3></div>
+        return <div className='dashboard'><Text middleError>{userDataError}</Text></div>
     }
     if (conversationError) {
-        return <div className='dashboard'><h3 className='userDataError'>{conversationError}</h3></div>
+        return <div className='dashboard'><Text middleError>{conversationError}</Text></div>
+    }
+
+    const colors = {
+        primary: '#004bc4',
+        secondary : '#003a96',
+        third:'#00B4DB',
+        primaryDash:'#e6e6e6',
+        secondaryDash:'#f5f5f5'
     }
 
     return (
         <div className='dashboard'>
-            <div className='left-side'>
-                <ContactBoard 
-                    user={userData}
-                />
-            </div>
-            <div className='right-side'>
-                {showProfile ? <Profile user={userData} /> : <ChatBox />}
-            </div>
-            {!showProfile && <MessageInput />}
+            <ThemeProvider theme={colors}>
+                <SideWrapper left view={(showChat || showProfile) ? false : true}>
+                    <ContactBoard 
+                        user={userData}
+                    />
+                </SideWrapper>
+                <SideWrapper view={(showChat || showProfile) ? true : false}>
+                    {showProfile ? <Profile user={userData} /> : <ChatBox />}
+                </SideWrapper>
+            </ThemeProvider>
         </div>
     )
 }
+export default Dashboard;

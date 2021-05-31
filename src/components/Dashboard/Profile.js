@@ -4,11 +4,20 @@ import {Formik} from 'formik'
 import { updateSchema } from '../../validations/validations'
 import TextInput from '../Inputs/TextInput'
 import PictureInput from '../Inputs/PictureInput'
+import Button from '../../style/components/Button'
+import Text from '../../style/components/Text'
+import ProfileWrapper from '../../style/components/Wrappers/ProfileWrapper'
+import ArrayWrapper from '../../style/components/Wrappers/ArrayWrapper'
+import ErrorWrapper from '../../style/components/Wrappers/ErrorWrapper'
+import Img from '../../style/components/Img'
+import { useDashboard } from '../../context/DashboardContext';
 
-export default function Profile({user}) {
+const Profile = ({user}) => {
 
 const {updateUser, uploadError, firstnameLoading,
      lastnameLoading, avatarLoading} = useUser();
+
+     const {setShowProfile, setShowChat} = useDashboard();
 
 const handleClick = () => {
     const avatar = document.getElementById('avatarInput');
@@ -17,10 +26,15 @@ const handleClick = () => {
 
 return (
 <>
-<div className='profile-view'>
-    <h3>My Profile</h3>
-</div>
-<div className='options'>
+<ProfileWrapper profile='true'>
+    <i
+        className="fas fa-angle-left backIcon"
+        onClick={()=>{setShowProfile(false); setShowChat(false);}}
+    >
+    </i>
+    <Text profile='true'>My Profile</Text>
+</ProfileWrapper>
+<ArrayWrapper profile='true'>
     <Formik
         initialValues = {{
             firstname: user.firstname,
@@ -35,26 +49,27 @@ return (
         })=>{
             let error;
             if (uploadError) {
-                error = <h2>{uploadError}</h2>;
+                error = <Text error>{uploadError}</Text>;
             }
             if (errors.firstname && touched.firstname) {
-                    error = <h2>{errors.firstname}</h2>;
+                    error = <Text error>{errors.firstname}</Text>;
             } else if (errors.lastname && touched.lastname) {
-                error = <h2>{errors.lastname}</h2>; 
+                error = <Text error>{errors.lastname}</Text>; 
             }
             return (
-            <form className='input-container' onSubmit={(e)=>e.preventDefault()}>
+            <form className='form-container' onSubmit={(e)=>e.preventDefault()}>
                 <div className='avatar' onClick={()=>handleClick()}>
                     {/* hidden input */}
                     {!avatarLoading ? (
                         <>
                             <PictureInput 
-                            name='avatar'
-                            type='file'
-                            style={{display:'none'}}
-                            id='avatarInput'
+                                name='avatar'
+                                type='file'
+                                style={{display:'none'}}
+                                id='avatarInput'
                             />
-                            <img src={user.avatarUrl} alt='profileAvatar'/>
+
+                            <Img profile='true' src={user.avatarUrl} alt='profileAvatar' />
                             <i className="fas fa-plus-circle"></i>
                         </>
                         ) : (<div className="lds-ring"><div></div><div></div><div></div><div></div></div>)
@@ -66,39 +81,41 @@ return (
                         placeholder='First Name'
                     />
                     <i className="fa fa-user"></i>
-                    <button 
-                        className={(user.firstname === values.firstname || errors.firstname) ? 'button disabled' : 'button'} 
+                    <Button 
+                        profile='true'
+                        disabled={(user.firstname === values.firstname || errors.firstname) ? true : false} 
                         type='button'
                         onClick={async () => !errors.firstname && updateUser('firstname', values.firstname)}
                     >
                         {firstnameLoading ? 'Loading...' : 'Update'}
-                        
-                    </button>
+                    </Button>
                 </div>
-                <div className='input'>
+                <div className='input'> 
                     <TextInput 
                         name='lastname'
                         placeholder='Last Name'
                     />
                     <i className="fa fa-user"></i>
-                    <button 
+                    <Button
+                        profile='true'
                         id='updtbutton'
-                        className={(user.lastname === values.lastname || errors.lastname) ? 'button disabled' : 'button'} 
+                        disabled={(user.lastname === values.lastname || errors.lastname) ? true : false} 
                         type='button'
                         onClick={async () => !errors.lastname && updateUser('lastname', values.lastname)}
                     >
                         {lastnameLoading ? 'Loading...' : 'Update'}
                         
-                    </button>
+                    </Button>
                 </div>
-                <div className='error'>
+                <ErrorWrapper>
                     {error}
-                </div>
+                </ErrorWrapper>
             </form> 
             )
         }}
     </Formik>
-</div>
+</ArrayWrapper>
 </>
 )
 }
+export default Profile;

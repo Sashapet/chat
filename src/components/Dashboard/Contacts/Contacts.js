@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react'
 import Contact from './Contact'
 import { useConverse } from '../../../context/ConverseContext'
 import { useDashboard } from '../../../context/DashboardContext'
-export default function Contacts() {
-    const { setShowProfile, setShowChat, setChatInfo} = useDashboard();
+import ContactWrapper from '../../../style/components/Wrappers/ContactWrapper'
 
+const Contacts = () => {
+
+    const { setShowProfile, setShowChat, setChatInfo} = useDashboard();
     const {conversations, users, setLoadConvers, loadConvers,
          fetchUserData, countConvers, setCountConvers, selectConverse} = useConverse();
 
@@ -51,8 +53,8 @@ export default function Contacts() {
         <>
             {newConversations && newConversations.map((converse, index)=>{
                 return (
-                    <div
-                        className={converse.conversation.selected ? 'contact active' : 'contact'} 
+                    <ContactWrapper
+                        active={converse.conversation.selected ? true : false} 
                         key={index} 
                         onClick={()=>{
                             setShowProfile(false); 
@@ -62,9 +64,10 @@ export default function Contacts() {
                         }}
                         >
                         <Contact user={converse.user} conversation={converse.conversation} />
-                    </div>
+                    </ContactWrapper>
                 )
             })}
         </>
     )
 }
+export default Contacts;
